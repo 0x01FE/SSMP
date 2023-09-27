@@ -2,10 +2,35 @@
 #include <iostream>
 #include <string>
 #include <sys/stat.h>
+#include <stdio.h>
 
+#define MAX_LEN 70
 
-int main()
+const std::string dash_line = "------------------------------------------------------------";
+
+void help()
 {
+    std::cout << dash_line << std::endl;
+    std::cout << "[1] Library" << std::endl;
+    std::cout << "[2] Settings" << std::endl;
+    std::cout << "[3] Exit" << std::endl;
+    std::cout << dash_line << std::endl;
+}
+
+int main(int argc, char * argv[])
+{
+
+    char user_input[MAX_LEN];
+
+    std::cout << "SSMP is a Stated Music Player" << std::endl;
+    help();
+
+    for(;;)
+    {
+        std::cout << "> ";
+        std::cin.getline(user_input, MAX_LEN);
+    }
+
     std::string path = ".";
 
     struct stat sb;
