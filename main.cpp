@@ -3,6 +3,10 @@
 #include <string>
 #include <sys/stat.h>
 #include <stdio.h>
+#include <vector>
+
+#include "lib/SimpleIni.h"
+#include "lib/split.h"
 
 #define MAX_LEN 70
 
@@ -17,8 +21,27 @@ void help()
     std::cout << dash_line << std::endl;
 }
 
+
+
+
 int main(int argc, char * argv[])
 {
+
+    // Get config data
+    CSimpleIni ini;
+    ini.SetUnicode();
+
+    // TODO : @0x01fe Add error handling
+    ini.LoadFile("config.ini");
+
+    bool multiValue;
+    const char * library_path;
+    library_path = ini.GetValue("LIBRARY", "LIBRARIES", nullptr, &multiValue);
+
+    std::vector<std::string> library_pathes = split(library_path, ',');
+
+    for (auto s : library_pathes)
+        std::cout << s << std::endl;
 
     char user_input[MAX_LEN];
 

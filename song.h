@@ -12,6 +12,7 @@ class Song
       const int,
       const int,
       const std::vector<int>);
+    ~Song();
 
     std::string getName();
     int getId();

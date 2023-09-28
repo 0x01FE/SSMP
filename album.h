@@ -12,14 +12,17 @@ class Album
     Album(const std::string,
       const int,
       const int[]);
+    ~Album();
 
     std::string getName();
     int getId();
     std::vector<Song> getSongs();
-    std::vector<const int> getArtists();
+    std::vector<int> getArtists();
 
+    void setName(const std::string);
+    void setId(const int);
+    void addArtist(const int);
     void addSong(const Song);
-
 
   private:
     std::string name;
