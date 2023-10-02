@@ -10,17 +10,20 @@ class Song
     Song();
     Song(const std::string,
       const int,
-      const int,
       const std::vector<int>);
+    Song(const std::string,
+      const int,
+      const int);
     ~Song();
 
     std::string getName();
+    std::string getPath();
     int getId();
     int getAlbum();
     std::vector<int> getArtists();
 
-    void setName(std::string);
-    void setId(const int);
+    void setName(const std::string);
+    void setPath(const std::string);
     void setAlbum(const int);
     void addArtist(const int);
 
@@ -28,6 +31,7 @@ class Song
 
   private:
     std::string name;
+    std::string path;
     int id;
     int album;
     std::vector<int> artists;

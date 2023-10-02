@@ -10,8 +10,7 @@ class Album
   public:
     Album();
     Album(const std::string,
-      const int,
-      const int[]);
+      const std::vector<int>);
     ~Album();
 
     std::string getName();
@@ -20,9 +19,8 @@ class Album
     std::vector<int> getArtists();
 
     void setName(const std::string);
-    void setId(const int);
-    void addArtist(const int);
     void addSong(const Song);
+    void addArtist(const int);
 
   private:
     std::string name;

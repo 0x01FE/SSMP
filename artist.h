@@ -9,9 +9,7 @@ class Artist
 {
   public:
     Artist();
-    Artist(const std::string,
-      const int,
-      const int[]);
+    Artist(const std::string);
     ~Artist();
 
     std::string getName();
