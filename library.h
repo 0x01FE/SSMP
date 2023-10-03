@@ -16,14 +16,15 @@ class Library
     std::string getName();
     std::string getPath();
     std::vector<Album *> getAlbums();
-    std::vector<Song> getSongs();
+    std::vector<Song *> getSongs();
 
     void setName(const std::string);
     void setPath(const std::string);
     void addAlbum(Album *);
-    void removeAlbum(const int);
 
     Album * searchAlbum(const std::string);
+
+    void print();
 
   private:
     std::string name;

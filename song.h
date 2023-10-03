@@ -22,7 +22,7 @@ class Song
     void setPath(const std::string);
     void setAlbum(Album *);
 
-    void Print();
+    void print();
 
   private:
     std::string name;

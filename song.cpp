@@ -30,10 +30,10 @@ void Song::setAlbum(Album * album) { this->album = album; }
 
 // Misc
 
-void Song::Print()
+void Song::print()
 {
-    std::printf("Name: %s\n", this->name);
-    std::printf("Path: %s\n", this->path);
-    std::printf("Album: %d\n", this->album->getName());
+    std::cout << "Name: " << this->name << std::endl;
+    std::cout << "Path: " << this->path << std::endl;
+    std::cout << "Album: " << this->album->getName() << std::endl;
 }
 

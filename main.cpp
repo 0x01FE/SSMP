@@ -40,15 +40,15 @@ int main(int argc, char * argv[])
     const char * library_path;
     library_path = ini.GetValue("LIBRARY", "LIBRARIES", nullptr, &multiValue);
 
-    std::vector<std::string> library_pathes = split(library_path, ',');
+    // std::vector<std::string> library_pathes = split(library_path, ',');
 
-    for (auto s : library_pathes)
-        std::cout << s << std::endl;
+    // for (auto s : library_pathes)
+    //     std::cout << s << std::endl;
 
     char user_input[MAX_LEN];
 
-    std::cout << "SSMP is a Stated Music Player" << std::endl;
-    help();
+    // std::cout << "SSMP is a Stated Music Player" << std::endl;
+    // help();
 
     // for(;;)
     // {
@@ -56,6 +56,7 @@ int main(int argc, char * argv[])
     //     std::cin.getline(user_input, MAX_LEN);
     // }
 
+    // std::cout << "path is " << library_path << std::endl;
 
     Library foo("test_lib", library_path);
 
