@@ -36,7 +36,3 @@
 
 # Config
 *.ini
-
-# Scripts
-*.sh
-*.bash
