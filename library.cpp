@@ -1,6 +1,7 @@
 #include <sys/stat.h>
 #include <filesystem>
 
+#include <taglib/taglib.h>
 #include <taglib/tag.h>
 #include <taglib/fileref.h>
 #include <taglib/tstring.h>
@@ -8,6 +9,25 @@
 
 
 // Helper Functions
+
+Album * searchAlbum(const std::string target_name, std::vector<Album *> * albums)
+{
+    for (int i = 0; i < albums->size(); i++)
+        if (albums->at(i)->getName() == target_name)
+            return albums->at(i);
+
+    return nullptr;
+}
+
+Album * searchAlbum(const std::string target_name, std::vector<Album *> albums)
+{
+    for (Album * album : albums)
+        if (album->getName() == target_name)
+            return album;
+}
+
+
+
 
 std::vector<std::filesystem::directory_entry> getDirContents(const std::string path)
 {
@@ -22,7 +42,7 @@ std::vector<std::filesystem::directory_entry> getDirContents(const std::string p
     return contents;
 }
 
-std::vector<Album> getAlbumsInDir(const std::string path, std::vector<Album *> albums, std::vector<Artist *> artists)
+std::vector<Album *> getAlbumsInDir(const std::string path, std::vector<Album *> albums)
 {
     struct stat sb;
     const char * file_path;
@@ -40,7 +60,7 @@ std::vector<Album> getAlbumsInDir(const std::string path, std::vector<Album *> a
             {
                 TagLib::Tag * tag = file.tag();
 
-                // Init Artists
+                // Get Artist
                 // TODO @0x01FE : support for multiple artists?
                 TagLib::String TagLib_artist_name = tag->artist();
                 std::string artist_name;
@@ -50,22 +70,18 @@ std::vector<Album> getAlbumsInDir(const std::string path, std::vector<Album *> a
                 else
                     artist_name = TagLib_artist_name.to8Bit();
 
-                Artist * temp_artist = new Artist(artist_name);
 
                 // Check if album already in memory, if not init
                 std::string album_name = tag->album().to8Bit();
                 Album * temp_album;
 
                 if (!(temp_album = searchAlbum(album_name, albums)))
-                    temp_album = new Album(album_name, temp_artist);
+                    temp_album = new Album(album_name, artist_name);
 
                 // Init Song
-                Song(tag->title().to8Bit(), );
+                Song(tag->title().to8Bit(), file_path, temp_album);
 
-
-
-                albums->push_back(temp_album);
-
+                albums.push_back(temp_album);
             }
         }
         else
@@ -73,6 +89,8 @@ std::vector<Album> getAlbumsInDir(const std::string path, std::vector<Album *> a
             getAlbumsInDir(file_path, albums);
         }
     }
+
+    return albums;
 }
 
 
@@ -83,7 +101,7 @@ Library::Library(const std::string name, const std::string path)
     this->name = name;
     this->path = path;
 
-    getAlbumsInDir(path, &albums);
+    this->albums = getAlbumsInDir(path, this->albums);
 }
 
 Library::~Library() { }
@@ -99,7 +117,6 @@ std::vector<Album *> Library::getAlbums() { return this->albums; }
 
 std::vector<Song> Library::getSongs() { }
 
-std::vector<Artist> Library::getArtists() { }
 
 
 // Mutators
@@ -115,25 +132,9 @@ void Library::addAlbum(Album * album) { this->albums.push_back(album); }
 
 void Library::removeAlbum(const int album_id) { }
 
-Album * Library::searchAlbum(const int target_index)
-{
-    for (Album * album : this->albums)
-        if (album->getId() == target_index)
-            return album;
-}
-
 Album * Library::searchAlbum(const std::string target_name)
 {
     for (Album * album : this->albums)
         if (album->getName() == target_name)
             return album;
-}
-
-Album * searchAlbum(const std::string target_name, std::vector<Album *> * albums)
-{
-    for (int i = 0; i < albums->size(); i++)
-        if (albums->at(i)->getName() == target_name)
-            return albums->at(i);
-
-    return nullptr;
 }

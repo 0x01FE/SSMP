@@ -8,6 +8,8 @@
 #include "lib/SimpleIni.h"
 #include "lib/split.h"
 
+#include "library.h"
+
 #define MAX_LEN 70
 
 const std::string dash_line = "------------------------------------------------------------";
@@ -48,27 +50,32 @@ int main(int argc, char * argv[])
     std::cout << "SSMP is a Stated Music Player" << std::endl;
     help();
 
-    for(;;)
-    {
-        std::cout << "> ";
-        std::cin.getline(user_input, MAX_LEN);
-    }
+    // for(;;)
+    // {
+    //     std::cout << "> ";
+    //     std::cin.getline(user_input, MAX_LEN);
+    // }
 
-    std::string path = ".";
 
-    struct stat sb;
+    Library foo("test_lib", library_path);
 
-    for (const auto& entry : std::filesystem::directory_iterator(path)) {
 
-        std::filesystem::path outfilename = entry.path();
-        std::string outfilename_str = outfilename.string();
-        const char* path = outfilename_str.c_str();
 
-        if (stat(path, &sb) == 0 && !(sb.st_mode & S_IFDIR))
-            std::cout << "file: " << path << std::endl;
-        else
-            std::cout << "dir: " << path << "/" << std::endl;
-    }
+    // std::string path = ".";
+
+    // struct stat sb;
+
+    // for (const auto& entry : std::filesystem::directory_iterator(path)) {
+
+    //     std::filesystem::path outfilename = entry.path();
+    //     std::string outfilename_str = outfilename.string();
+    //     const char* path = outfilename_str.c_str();
+
+    //     if (stat(path, &sb) == 0 && !(sb.st_mode & S_IFDIR))
+    //         std::cout << "file: " << path << std::endl;
+    //     else
+    //         std::cout << "dir: " << path << "/" << std::endl;
+    // }
 }
 
 

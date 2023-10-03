@@ -1,30 +1,15 @@
 #include "album.h"
-#include "artist.h"
-
-int index = 0;
-
+#include "song.h"
 
 Album::Album()
 {
     this->name = "";
-    this->id = index;
-    index++;
 }
 
-Album::Album(const std::string name, const std::vector<Artist *> artists)
+Album::Album(const std::string name, const std::string artist)
 {
     this->name = name;
-    this->id = index;
-    this->artists = artists;
-    index++;
-}
-
-Album::Album(const std::string name, Artist * artist)
-{
-    this->name = name;
-    this->id = index;
-    this->artists.push_back(artist);
-    index++;
+    this->artist = artist;
 }
 
 Album::~Album() { }
@@ -33,18 +18,16 @@ Album::~Album() { }
 
 std::string Album::getName() { return this->name; }
 
-int Album::getId() { return this->id; }
-
 std::vector<Song> Album::getSongs() { return this->songs; }
 
-std::vector<Artist *> Album::getArtists() { return this->artists; }
+std::string Album::getArtist() { return this->artist; }
 
 
 // Setters
 
 void Album::setName(const std::string name) { this->name = name; }
 
-void Album::addSong(const Song song) { this->songs.push_back(song); }
+void Album::addSong(Song song) { this->songs.push_back(song); }
 
-void Album::addArtist(Artist * artist) { this->artists.push_back(artist); }
+void Album::setArtist(std::string artist) { this->artist = artist; }
 

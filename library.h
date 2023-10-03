@@ -5,7 +5,6 @@
 #include <vector>
 #include "album.h"
 #include "song.h"
-#include "artist.h"
 
 class Library
 {
@@ -18,14 +17,12 @@ class Library
     std::string getPath();
     std::vector<Album *> getAlbums();
     std::vector<Song> getSongs();
-    std::vector<Artist> getArtists();
 
     void setName(const std::string);
     void setPath(const std::string);
     void addAlbum(Album *);
     void removeAlbum(const int);
 
-    Album * searchAlbum(const int);
     Album * searchAlbum(const std::string);
 
   private:
