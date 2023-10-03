@@ -22,7 +22,7 @@ std::vector<std::filesystem::directory_entry> getDirContents(const std::string p
     return contents;
 }
 
-std::vector<Album> getAlbumsInDir(const std::string path, std::vector<Album *> * albums)
+std::vector<Album> getAlbumsInDir(const std::string path, std::vector<Album *> albums, std::vector<Artist *> artists)
 {
     struct stat sb;
     const char * file_path;
@@ -52,9 +52,15 @@ std::vector<Album> getAlbumsInDir(const std::string path, std::vector<Album *> *
 
                 Artist * temp_artist = new Artist(artist_name);
 
+                // Check if album already in memory, if not init
+                std::string album_name = tag->album().to8Bit();
+                Album * temp_album;
+
+                if (!(temp_album = searchAlbum(album_name, albums)))
+                    temp_album = new Album(album_name, temp_artist);
+
                 // Init Song
-
-
+                Song(tag->title().to8Bit(), );
 
 
 
@@ -123,4 +129,11 @@ Album * Library::searchAlbum(const std::string target_name)
             return album;
 }
 
+Album * searchAlbum(const std::string target_name, std::vector<Album *> * albums)
+{
+    for (int i = 0; i < albums->size(); i++)
+        if (albums->at(i)->getName() == target_name)
+            return albums->at(i);
 
+    return nullptr;
+}
