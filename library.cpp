@@ -88,14 +88,14 @@ void getAlbumsInDir(const std::string path, std::vector<Album *> * albums)
                 if (!(temp_album = searchAlbum(album_name, albums)))
                 {
                     std::cout << "making new album " << album_name << "..." << std::endl;
-                    temp_album = new Album(album_name, artist_name);
+                    temp_album = new Album(album_name);
                     albums->push_back(temp_album);
                 }
 
                 // Init Song
                 std::string song_title = tag->title().to8Bit();
 
-                Song * temp_song = new Song(song_title, file_path_cstr, temp_album);
+                Song * temp_song = new Song(song_title, file_path_cstr, tag->track(), artist_name, temp_album);
 
                 temp_song->print();
 
