@@ -15,7 +15,9 @@ class Library
 
     std::string getName();
     std::string getPath();
+    int getAlbumCount();
     std::vector<Album *> getAlbums();
+    Album * getAlbum(int);
     std::vector<Song *> getSongs();
 
     void setName(const std::string);
@@ -23,6 +25,8 @@ class Library
     void addAlbum(Album *);
 
     Album * searchAlbum(const std::string);
+
+    int printAlbumOptions();
 
     void print();
 

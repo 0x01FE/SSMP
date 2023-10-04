@@ -28,6 +28,21 @@ std::vector<Song *> Album::getSongs() { return this->songs; }
 
 std::vector<std::string> Album::getArtists() { return this->artists; }
 
+// TODO @0x01fe : sort artists by number of tracks in the album
+std::string Album::getArtistsString()
+{
+    std::string artists_str;
+
+    for (std::string artist : this->artists)
+    {
+        if (artist == (this->artists.at(artists.size()-1)))
+            artists_str = artists_str + artist;
+        else
+           artists_str = artists_str + artist + ", ";
+    }
+
+    return artists_str;
+}
 
 // Setters
 
@@ -56,13 +71,26 @@ void Album::addArtist(std::string artist) { this->artists.push_back(artist); }
 
 // Misc
 
+int Album::printSongOptions()
+{
+    Song * song;
+    int index = 0;
+    for (; index < this->songs.size(); index++)
+    {
+        song = this->songs[index];
+        std::printf("[%d] %s - %s\n", index + 1, song->getName().c_str(), song->getArtist().c_str());
+    }
+
+    return index;
+}
+
 void Album::print()
 {
     std::cout << "Name: " << this->name << std::endl;
 
     std::cout << "Artists: ";
     for (std::string artist : this->artists)
-        std::cout << artist;
+        std::cout << artist << " ";
     std::cout << std::endl;
 
     std::cout << "Songs:" << std::endl;

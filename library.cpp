@@ -67,11 +67,10 @@ void getAlbumsInDir(const std::string path, std::vector<Album *> * albums)
             TagLib::FileRef file(file_path_cstr);
             if (!file.isNull() && file.tag())
             {
-                std::cout << "file name: " << file_path_cstr << std::endl;
+                // std::cout << "file name: " << file_path_cstr << std::endl;
                 TagLib::Tag * tag = file.tag();
 
                 // Get Artist
-                // TODO @0x01FE : support for multiple artists?
                 TagLib::String TagLib_artist_name = tag->artist();
                 std::string artist_name;
 
@@ -87,7 +86,7 @@ void getAlbumsInDir(const std::string path, std::vector<Album *> * albums)
 
                 if (!(temp_album = searchAlbum(album_name, albums)))
                 {
-                    std::cout << "making new album " << album_name << "..." << std::endl;
+                    // std::cout << "making new album " << album_name << "..." << std::endl;
                     temp_album = new Album(album_name);
                     albums->push_back(temp_album);
                 }
@@ -97,7 +96,7 @@ void getAlbumsInDir(const std::string path, std::vector<Album *> * albums)
 
                 Song * temp_song = new Song(song_title, file_path_cstr, tag->track(), artist_name, temp_album);
 
-                temp_song->print();
+                // temp_song->print();
 
                 temp_album->addSong(temp_song);
             }
@@ -121,7 +120,7 @@ Library::Library(const std::string name, const std::string path)
     this->path = path;
 
     getAlbumsInDir(path, &this->albums);
-    this->print();
+    // this->print();
 }
 
 Library::~Library() { }
@@ -133,7 +132,13 @@ std::string Library::getName() { return this->name; }
 
 std::string Library::getPath() { return this->path; }
 
+int Library::getAlbumCount() { return this->albums.size(); }
+
 std::vector<Album *> Library::getAlbums() { return this->albums; }
+
+Album * Library::getAlbum(int index) { return this->albums[index]; }
+
+
 
 std::vector<Song *> Library::getSongs()
 {
@@ -169,6 +174,19 @@ void Library::print()
     {
         album->print();
     }
+}
+
+int Library::printAlbumOptions()
+{
+    Album * album;
+    int index = 0;
+    for (; index < this->albums.size(); index++)
+    {
+        album = this->albums[index];
+        std::cout << "[" << (index + 1) << "] " << album->getName() << " - " << album->getArtistsString() << std::endl;
+    }
+
+    return index;
 }
 
 Album * Library::searchAlbum(const std::string target_name)

@@ -19,10 +19,13 @@ class Album
     int getId();
     std::vector<Song *> getSongs();
     std::vector<std::string> getArtists();
+    std::string getArtistsString();
 
     void setName(const std::string);
     void addSong(Song *);
     void addArtist(const std::string);
+
+    int printSongOptions();
 
     void print();
 
