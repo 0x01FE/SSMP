@@ -4,6 +4,10 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <vector>
+#include <thread>
+
+#include <ao/ao.h>
+#include <mpg123.h>
 
 #include "lib/SimpleIni.h"
 #include "lib/split.h"
@@ -11,9 +15,71 @@
 #include "library.h"
 
 #define MAX_LEN 70
+#define BITS 8
 
 const std::string dash_line = "------------------------------------------------------------";
 char user_input[MAX_LEN];
+std::thread * playing;
+
+
+void play_thread(int driver, ao_sample_format format, mpg123_handle * mh, char * buffer, size_t buffer_size)
+{
+    size_t done;
+
+    ao_device * device = ao_open_live(driver, &format, NULL);
+
+    while (mpg123_read(mh, buffer, buffer_size, &done) == MPG123_OK)
+        ao_play(device, buffer, done);
+}
+
+void play(const char * path)
+{
+    mpg123_handle * mh;
+    char * buffer;
+    size_t buffer_size;
+    int err;
+
+    int driver;
+    ao_device *dev;
+
+    ao_sample_format format;
+    int channels, encoding;
+    long rate;
+
+    /* initializations */
+    ao_initialize();
+    driver = ao_default_driver_id();
+    mpg123_init();
+    mh = mpg123_new(NULL, &err);
+    buffer_size = mpg123_outblock(mh);
+    buffer = (char *) malloc(buffer_size * sizeof(char));
+
+    /* open the file and get the decoding format */
+    mpg123_open(mh, path);
+    mpg123_getformat(mh, &rate, &channels, &encoding);
+
+    /* set the output format and open the output device */
+    format.bits = mpg123_encsize(encoding) * BITS;
+    format.rate = rate;
+    format.channels = channels;
+    format.byte_format = AO_FMT_NATIVE;
+    format.matrix = 0;
+
+    /* decode and play */
+
+    playing = new std::thread(play_thread, driver, format, mh, buffer, buffer_size);
+
+    // while (mpg123_read(mh, buffer, buffer_size, &done) == MPG123_OK)
+    //     ao_play(dev, buffer, done);
+
+    /* clean up */
+    free(buffer);
+    ao_close(dev);
+    mpg123_close(mh);
+    mpg123_delete(mh);
+    mpg123_exit();
+    ao_shutdown();
+}
 
 void help()
 {
@@ -67,6 +133,13 @@ void libraryMenu(Library * music_lib)
         libraryMenu(music_lib);
 
     selected_index = selected_option - 1;
+
+    Song * selected_song = selected_album->getSong(selected_index);
+
+    std::printf("Now playing %s by %s...\n", selected_song->getName().c_str(), selected_song->getArtist().c_str());
+    // std::fflush(stdout);
+
+    play(selected_song->getPath().c_str());
 }
 
 
@@ -97,10 +170,9 @@ int main(int argc, char * argv[])
 
     for(;;)
     {
-        std::cout << "> ";
-        std::cin.getline(user_input, MAX_LEN);
+        int selected_input = promptInput();
 
-        switch (std::stoi(user_input))
+        switch (selected_input)
         {
             case 1:
                 libraryMenu(&music_lib);

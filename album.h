@@ -18,6 +18,7 @@ class Album
     std::string getName();
     int getId();
     std::vector<Song *> getSongs();
+    Song * getSong(int);
     std::vector<std::string> getArtists();
     std::string getArtistsString();
 

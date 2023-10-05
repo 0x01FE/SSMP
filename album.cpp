@@ -26,6 +26,8 @@ std::string Album::getName() { return this->name; }
 
 std::vector<Song *> Album::getSongs() { return this->songs; }
 
+Song * Album::getSong(int index) { return this->songs[index]; }
+
 std::vector<std::string> Album::getArtists() { return this->artists; }
 
 // TODO @0x01fe : sort artists by number of tracks in the album
