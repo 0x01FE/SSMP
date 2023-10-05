@@ -3,33 +3,37 @@
 
 #include <string>
 #include <vector>
-#include "song.h"
+
+class Song;
 
 class Album
 {
   public:
     Album();
     Album(const std::string,
-      const std::vector<Artist *>);
-    Album(const std::string,
-      Artist *);
+      const std::string);
+    Album(const std::string);
     ~Album();
 
     std::string getName();
     int getId();
-    std::vector<Song> getSongs();
-    std::vector<Artist *> getArtists();
+    std::vector<Song *> getSongs();
+    Song * getSong(int);
+    std::vector<std::string> getArtists();
+    std::string getArtistsString();
 
     void setName(const std::string);
-    void addSong(const Song);
-    void addArtist(Artist *);
+    void addSong(Song *);
+    void addArtist(const std::string);
+
+    int printSongOptions();
+
+    void print();
 
   private:
     std::string name;
-    int id;
-    std::vector<Song> songs;
-    // Artists are stored in an album as their id
-    std::vector<Artist *> artists;
+    std::vector<Song *> songs;
+    std::vector<std::string> artists;
 };
 
 #endif
