@@ -136,14 +136,7 @@ void libraryMenu(Library * music_lib)
 
     // const char * song_path = music_lib->getAlbum(selected_index)->getSong(selected_index)->getPath().c_str();
 
-    std::cout << "before thread direct: " << music_lib->getAlbum(selected_index)->getSong(selected_index)->getPath().c_str() << std::endl;
     std::string song_path_str = music_lib->getAlbum(selected_index)->getSong(selected_index)->getPath().string();
-    std::cout << "before thread string: " << song_path_str << std::endl;
-    std::cout << "before thread string to c_str: " << song_path_str.c_str() << std::endl;
-
-    const char * song_path = song_path_str.c_str();
-
-    std::cout << "before thread c_str var: " << song_path << std::endl;
 
 
     playing = new std::thread(play, song_path_str);
