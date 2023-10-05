@@ -3,7 +3,7 @@
 
 Song::Song() { }
 
-Song::Song(const std::string name, const std::string path, int track, const std::string artist, Album * album)
+Song::Song(const std::string name, std::filesystem::path path, int track, const std::string artist, Album * album)
 {
     this->name = name;
     this->path = path;
@@ -18,7 +18,7 @@ Song::~Song() { }
 
 std::string Song::getName() { return this->name; }
 
-std::string Song::getPath() { return this->path; }
+std::filesystem::path Song::getPath() { return this->path; }
 
 int Song::getTrack() { return this->track; }
 
@@ -31,7 +31,7 @@ Album * Song::getAlbum() { return this->album; }
 
 void Song::setName(const std::string name) { this->name = name; }
 
-void Song::setPath(const std::string path) { this->path = path; }
+void Song::setPath(const std::filesystem::path path) { this->path = path; }
 
 void Song::setTrack(int track) { this->track = track; }
 
@@ -45,7 +45,7 @@ void Song::setAlbum(Album * album) { this->album = album; }
 void Song::print()
 {
     std::cout << "Name: " << this->name << std::endl;
-    std::cout << "Path: " << this->path << std::endl;
+    std::cout << "Path: " << this->path.c_str() << std::endl;
     std::cout << "Track #: " << this->track << std::endl;
     std::cout << "Artist: " << this->artist << std::endl;
     std::cout << "Album: " << this->album->getName() << std::endl;

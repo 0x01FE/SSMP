@@ -94,7 +94,7 @@ void getAlbumsInDir(const std::string path, std::vector<Album *> * albums)
                 // Init Song
                 std::string song_title = tag->title().to8Bit();
 
-                Song * temp_song = new Song(song_title, file_path_cstr, tag->track(), artist_name, temp_album);
+                Song * temp_song = new Song(song_title, file_path, tag->track(), artist_name, temp_album);
 
                 // temp_song->print();
 

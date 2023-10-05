@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <filesystem>
 #include "album.h"
 
 class Song
@@ -10,20 +11,20 @@ class Song
   public:
     Song();
     Song(const std::string,
-      const std::string,
+      std::filesystem::path,
       int,
       const std::string,
       Album *);
     ~Song();
 
     std::string getName();
-    std::string getPath();
+    std::filesystem::path getPath();
     int getTrack();
     std::string getArtist();
     Album * getAlbum();
 
     void setName(const std::string);
-    void setPath(const std::string);
+    void setPath(std::filesystem::path);
     void setTrack(int);
     void setArtist(const std::string);
     void setAlbum(Album *);
@@ -32,7 +33,7 @@ class Song
 
   private:
     std::string name;
-    std::string path;
+    std::filesystem::path path;
     std::string artist;
     int track;
     Album * album;

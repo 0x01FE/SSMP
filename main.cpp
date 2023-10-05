@@ -22,21 +22,13 @@ char user_input[MAX_LEN];
 std::thread * playing;
 
 
-void play_thread(int driver, ao_sample_format format, mpg123_handle * mh, char * buffer, size_t buffer_size)
+void play(std::string const& path)
 {
-    size_t done;
-
-    ao_device * device = ao_open_live(driver, &format, NULL);
-
-    while (mpg123_read(mh, buffer, buffer_size, &done) == MPG123_OK)
-        ao_play(device, buffer, done);
-}
-
-void play(const char * path)
-{
+    std::cout << "in thread path: " << path.c_str() << std::endl;
     mpg123_handle * mh;
     char * buffer;
     size_t buffer_size;
+    size_t done;
     int err;
 
     int driver;
@@ -55,7 +47,7 @@ void play(const char * path)
     buffer = (char *) malloc(buffer_size * sizeof(char));
 
     /* open the file and get the decoding format */
-    mpg123_open(mh, path);
+    mpg123_open(mh, path.c_str());
     mpg123_getformat(mh, &rate, &channels, &encoding);
 
     /* set the output format and open the output device */
@@ -67,10 +59,11 @@ void play(const char * path)
 
     /* decode and play */
 
-    playing = new std::thread(play_thread, driver, format, mh, buffer, buffer_size);
+    ao_device * device = ao_open_live(driver, &format, NULL);
 
-    // while (mpg123_read(mh, buffer, buffer_size, &done) == MPG123_OK)
-    //     ao_play(dev, buffer, done);
+    while (mpg123_read(mh, buffer, buffer_size, &done) == MPG123_OK)
+        ao_play(dev, buffer, done);
+
 
     /* clean up */
     free(buffer);
@@ -136,10 +129,24 @@ void libraryMenu(Library * music_lib)
 
     Song * selected_song = selected_album->getSong(selected_index);
 
+    selected_song->print();
+
     std::printf("Now playing %s by %s...\n", selected_song->getName().c_str(), selected_song->getArtist().c_str());
     // std::fflush(stdout);
 
-    play(selected_song->getPath().c_str());
+    // const char * song_path = music_lib->getAlbum(selected_index)->getSong(selected_index)->getPath().c_str();
+
+    std::cout << "before thread direct: " << music_lib->getAlbum(selected_index)->getSong(selected_index)->getPath().c_str() << std::endl;
+    std::string song_path_str = music_lib->getAlbum(selected_index)->getSong(selected_index)->getPath().string();
+    std::cout << "before thread string: " << song_path_str << std::endl;
+    std::cout << "before thread string to c_str: " << song_path_str.c_str() << std::endl;
+
+    const char * song_path = song_path_str.c_str();
+
+    std::cout << "before thread c_str var: " << song_path << std::endl;
+
+
+    playing = new std::thread(play, song_path_str);
 }
 
 
@@ -182,6 +189,11 @@ int main(int argc, char * argv[])
                 break;
             case 3:
                 exit(1);
+            case 4:
+                music_lib.print();
+                break;
+            case 5:
+                std::cout << music_lib.getAlbum(1)->getSong(1)->getPath().c_str() << std::endl;
         }
     }
 
